@@ -8,6 +8,9 @@
     <Filter Include="App Files">
       <UniqueIdentifier>{7a6128b3-1248-4a92-b582-e6c5a1ca07b7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MultiPrecision">
+      <UniqueIdentifier>{fca2be49-4bde-4251-a58a-f518ac9101d2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -19,6 +22,9 @@
     <ClInclude Include="stdafx.h">
       <Filter>App Files</Filter>
     </ClInclude>
+    <ClInclude Include="MultiPrecision.h">
+      <Filter>MultiPrecision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CutiePie.cpp">
@@ -26,6 +32,9 @@
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>App Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MPuint.cpp">
+      <Filter>MultiPrecision</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
