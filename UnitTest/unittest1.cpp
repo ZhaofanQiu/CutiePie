@@ -141,6 +141,21 @@ namespace UnitTest
 			Assert::IsTrue(PiModule::MPfloatDiv(mpf1, mpf2, 100) == MPfloat((LPuint)2));
 			Assert::IsTrue(PiModule::MPfloatDiv(mpf3, mpf4, 100) == MPfloat((LPuint)2));
 		}
+		TEST_METHOD(BSTest)
+		{
+			int k = 10000;
+			LPuint cn = 10939058860032000;
+			int dpt = (int)floor(log(cn / 6 / 2 / 6) / log(10));
+			int N = int(k / dpt + 1);
+			MP::MPuint _p, _q, _t;
+			bool flag;
+			PM::PiModule::BS(0, N, _p, _q, _t, flag);
+		}
+		TEST_METHOD(SqrtTest)
+		{
+			int k = 10000;
+			PM::PiModule::MPfloatSqrt(MPfloat((LPuint)10005), k);
+		}
 		TEST_METHOD(MainTest)
 		{
 			int k = 10000;

@@ -4,17 +4,20 @@
 
 #include <intrin.h>
 
+#include <algorithm>
+
 namespace MP
 {
 	MPuint MPuint::operator+(const MPuint& mpu)
 	{
-		MPuint out;
-		LPuint *a1 = m_data->A, *a2 = mpu.m_data->A, *a3 = out.m_data->A;
-		int l1 = m_data->len, l2 = mpu.m_data->len;
+		LPuint *a1 = m_data.A, *a2 = mpu.m_data.A;
+		int l1 = m_data.len, l2 = mpu.m_data.len;
+		MPuint out(std::max(l1, l2) + 1);
 
+		LPuint *a3 = out.m_data.A;
 		if (l1 <= l2)
 		{
-			out.m_data->len = l2;
+			out.m_data.len = l2;
 			unsigned char rem = 0;
 			for (int i = 0; i < l1; i++)
 			{
@@ -34,13 +37,13 @@ namespace MP
 				if (rem != 0)
 				{
 					a3[l2] = rem;
-					out.m_data->len++;
+					out.m_data.len++;
 				}
 			}
 		}
 		else
 		{
-			out.m_data->len = l1;
+			out.m_data.len = l1;
 			unsigned char rem = 0;
 			for (int i = 0; i < l2; i++)
 			{
@@ -57,7 +60,7 @@ namespace MP
 				if (rem != 0)
 				{
 					a3[l1] = rem;
-					out.m_data->len++;
+					out.m_data.len++;
 				}
 			}
 		}
@@ -66,33 +69,33 @@ namespace MP
 
 	MPuint MPuint::operator+(const LPuint& lpu)
 	{
-		MPuint out;
-		LPuint *a1 = m_data->A, *a2 = out.m_data->A;
+		MPuint out(m_data.len + 1);
+		LPuint *a1 = m_data.A, *a2 = out.m_data.A;
 
-		if (m_data->len == 0)
+		if (m_data.len == 0)
 		{
-			out.m_data->len = 1;
+			out.m_data.len = 1;
 			a2[0] = lpu;
 		}
 		else
 		{
 			unsigned char rem = 0;
-			out.m_data->len = m_data->len;
+			out.m_data.len = m_data.len;
 
 			rem = _addcarry_u64(rem, a1[0], lpu, a2);
 			int i = 1;
-			while (rem != 0 && i < m_data->len)
+			while (rem != 0 && i < m_data.len)
 			{
 				rem = _addcarry_u64(rem, a1[i], 0, a2 + i);
 				i++;
 			}
 			if (rem != 0)
 			{
-				out.m_data->len++;
-				a2[out.m_data->len - 1] = rem;
+				out.m_data.len++;
+				a2[out.m_data.len - 1] = rem;
 			}
 			else
-				memcpy(a2 + i, a1 + i, (out.m_data->len - i) * sizeof(LPuint));
+				memcpy(a2 + i, a1 + i, (out.m_data.len - i) * sizeof(LPuint));
 		}
 		return out;
 	}

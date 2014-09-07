@@ -8,13 +8,13 @@ namespace PM
 {
 	MPfloat PiModule::MPfloatSqrt(const MPfloat& mpf, int n)
 	{
-		long double cs = (long double)mpf.m_data->A[mpf.m_data->len - 1];
-		if (((mpf.m_data->len - 1) & 1) != 0)
+		long double cs = (long double)mpf.m_data.A[mpf.m_data.len - 1];
+		if (((mpf.m_data.len - 1) & 1) != 0)
 		{
-			cs = cs * exp2(64) + mpf.m_data->A[mpf.m_data->len - 2];
+			cs = cs * exp2(64) + mpf.m_data.A[mpf.m_data.len - 2];
 		}
 		cs = 1 / sqrt(cs);
-		MPfloat re(cs, -(int)floor((mpf.m_data->len - 1) / 2));
+		MPfloat re(cs, -(int)floor((mpf.m_data.len - 1) / 2));
 		int nn = 1;
 		MPfloat rnx;
 		while (nn < n)

@@ -8,18 +8,19 @@ namespace MP
 {
 	MPfloat MPfloat::operator+(const MPfloat& mpf)
 	{
-		MPfloat out;
-		LPuint *a1 = m_data->A, *a2 = mpf.m_data->A, *a3 = out.m_data->A;
-		int l1 = m_data->len, l2 = mpf.m_data->len;
-		int e1 = m_data->exp, e2 = mpf.m_data->exp;
+		LPuint *a1 = m_data.A, *a2 = mpf.m_data.A;
+		int l1 = m_data.len, l2 = mpf.m_data.len;
+		int e1 = m_data.exp, e2 = mpf.m_data.exp;
+		MPfloat out(std::max(l1 + e1, l2 + e2) - std::min(e1, e2) + 1);
 
-		out.m_data->exp = std::min(e1, e2);
-		out.m_data->len = std::max(l1 + e1, l2 + e2) - out.m_data->exp;
-		int e3 = out.m_data->exp, l3 = out.m_data->len;
+		LPuint *a3 = out.m_data.A;
+		out.m_data.exp = std::min(e1, e2);
+		out.m_data.len = std::max(l1 + e1, l2 + e2) - out.m_data.exp;
+		int e3 = out.m_data.exp, l3 = out.m_data.len;
 
 		unsigned char rem = 0;
 
-		for (int i = 0; i < out.m_data->len; i++)
+		for (int i = 0; i < out.m_data.len; i++)
 		{
 			bool in1 = (i + e3 >= e1 && i + e3 < e1 + l1);
 			bool in2 = (i + e3 >= e2 && i + e3 < e2 + l2);
@@ -44,8 +45,8 @@ namespace MP
 		}
 		if (rem != 0)
 		{
-			out.m_data->len++;
-			out.m_data->A[out.m_data->len - 1] = rem;
+			out.m_data.len++;
+			out.m_data.A[out.m_data.len - 1] = rem;
 		}
 		return out;
 	}

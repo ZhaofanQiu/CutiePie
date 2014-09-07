@@ -11,19 +11,19 @@ namespace PM
 {
 	LPuint PiModule::MPfloatPos(MPfloat& mpf)
 	{
-		if (mpf.m_data->len > -mpf.m_data->exp)
+		if (mpf.m_data.len > -mpf.m_data.exp)
 		{
-			mpf.m_data->len = -mpf.m_data->exp;
-			return (mpf.m_data->A[mpf.m_data->len]);
+			mpf.m_data.len = -mpf.m_data.exp;
+			return (mpf.m_data.A[mpf.m_data.len]);
 		}
 		else
 			return 0;
 	}
 	void PiModule::MPfloatNPos(MPfloat& mpf)
 	{
-		if (mpf.m_data->exp <= 0 && mpf.m_data->len > -mpf.m_data->exp)
+		if (mpf.m_data.exp <= 0 && mpf.m_data.len > -mpf.m_data.exp)
 		{
-			mpf.m_data->len = -mpf.m_data->exp;
+			mpf.m_data.len = -mpf.m_data.exp;
 		}
 	}
 	void PiModule::MPfloatPrint(const MPfloat& mpf, int n)
