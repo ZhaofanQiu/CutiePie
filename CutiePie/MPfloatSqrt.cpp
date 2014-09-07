@@ -6,7 +6,7 @@
 
 namespace PM
 {
-	MPfloat PiModule::MPfloatSqrt(const MPfloat& mpf, int n)
+	void PiModule::MPfloatSqrt(MPfloat& res, const MPfloat& mpf, int n)
 	{
 		long double cs = (long double)mpf.m_data.A[mpf.m_data.len - 1];
 		if (((mpf.m_data.len - 1) & 1) != 0)
@@ -32,6 +32,6 @@ namespace PM
 			re = MPfloatCut(re, n);
 			nn *= 2;
 		}
-		return re;
+		res = re;
 	}
 }

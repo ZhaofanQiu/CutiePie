@@ -10,7 +10,7 @@ namespace PM
 	{
 	public:
 		static MPfloat MPfloatDiv(const MPfloat& mpf1, const MPfloat& mpf2, int n);
-		static MPfloat MPfloatSqrt(const MPfloat& mpf, int n);
+		static void MPfloatSqrt(MPfloat& res, const MPfloat& mpf, int n);
 		static void BS(int a, int b, MPuint& P, MPuint& Q, MPuint& T, bool& flag);
 		static void MPfloatPrint(const MPfloat& mpf, int n);
 		static MPfloat MPfloatCut(const MPfloat& mpf, int n);

@@ -25,6 +25,8 @@ namespace PM
 	}
 	MPfloat PiModule::MPfloatDiv(const MPfloat& mpf1, const MPfloat& mpf2, int n)
 	{
+		MPfloat x1 = MPfloatCut(mpf1, n), x2 = MPfloatCut(mpf2, n);
+
 		long double cs = (long double)mpf2.m_data.A[mpf2.m_data.len - 1];
 		cs = 1 / cs;
 		MPfloat re(cs, - (mpf2.m_data.len - 1));
@@ -32,7 +34,7 @@ namespace PM
 		MPfloat rnx;
 		while (nn < n)
 		{
-			rnx = re * mpf2;
+			rnx = re * x2;
 			if (rnx > MPfloat((LPuint)1))
 			{
 				re = re - (rnx - MPfloat((LPuint)1)) * re;
@@ -44,6 +46,6 @@ namespace PM
 			re = MPfloatCut(re, n);
 			nn *= 2;
 		}
-		return re * mpf1;
+		return re * x1;
 	}
 }
