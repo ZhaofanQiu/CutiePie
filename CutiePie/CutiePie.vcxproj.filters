@@ -11,6 +11,9 @@
     <Filter Include="MultiPrecision">
       <UniqueIdentifier>{fca2be49-4bde-4251-a58a-f518ac9101d2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CalculatePi">
+      <UniqueIdentifier>{64f1251c-b112-4256-9526-06fd30810699}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -25,6 +28,9 @@
     <ClInclude Include="MultiPrecision.h">
       <Filter>MultiPrecision</Filter>
     </ClInclude>
+    <ClInclude Include="PiModule.h">
+      <Filter>CalculatePi</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CutiePie.cpp">
@@ -35,6 +41,45 @@
     </ClCompile>
     <ClCompile Include="MPuint.cpp">
       <Filter>MultiPrecision</Filter>
+    </ClCompile>
+    <ClCompile Include="MPuintAdd.cpp">
+      <Filter>MultiPrecision</Filter>
+    </ClCompile>
+    <ClCompile Include="MPuintEqual.cpp">
+      <Filter>MultiPrecision</Filter>
+    </ClCompile>
+    <ClCompile Include="MPuintMul.cpp">
+      <Filter>MultiPrecision</Filter>
+    </ClCompile>
+    <ClCompile Include="MPuintSub.cpp">
+      <Filter>MultiPrecision</Filter>
+    </ClCompile>
+    <ClCompile Include="MPfloat.cpp">
+      <Filter>MultiPrecision</Filter>
+    </ClCompile>
+    <ClCompile Include="MPfloatEqual.cpp">
+      <Filter>MultiPrecision</Filter>
+    </ClCompile>
+    <ClCompile Include="MPfloatAdd.cpp">
+      <Filter>MultiPrecision</Filter>
+    </ClCompile>
+    <ClCompile Include="MPfloatSub.cpp">
+      <Filter>MultiPrecision</Filter>
+    </ClCompile>
+    <ClCompile Include="MPfloatMul.cpp">
+      <Filter>MultiPrecision</Filter>
+    </ClCompile>
+    <ClCompile Include="MPfloatDiv.cpp">
+      <Filter>CalculatePi</Filter>
+    </ClCompile>
+    <ClCompile Include="MPfloatSqrt.cpp">
+      <Filter>CalculatePi</Filter>
+    </ClCompile>
+    <ClCompile Include="MPfloatPrint.cpp">
+      <Filter>CalculatePi</Filter>
+    </ClCompile>
+    <ClCompile Include="BS.cpp">
+      <Filter>CalculatePi</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
