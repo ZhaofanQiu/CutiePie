@@ -31,6 +31,9 @@
     <ClInclude Include="PiModule.h">
       <Filter>CalculatePi</Filter>
     </ClInclude>
+    <ClInclude Include="MPmpMul.h">
+      <Filter>CalculatePi</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CutiePie.cpp">
@@ -79,6 +82,9 @@
       <Filter>CalculatePi</Filter>
     </ClCompile>
     <ClCompile Include="BS.cpp">
+      <Filter>CalculatePi</Filter>
+    </ClCompile>
+    <ClCompile Include="MPmpMul.cpp">
       <Filter>CalculatePi</Filter>
     </ClCompile>
   </ItemGroup>

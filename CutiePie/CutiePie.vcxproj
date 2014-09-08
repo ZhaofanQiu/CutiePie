@@ -142,6 +142,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="MPmpMul.h" />
     <ClInclude Include="MultiPrecision.h" />
     <ClInclude Include="PiModule.h" />
     <ClInclude Include="stdafx.h" />
@@ -158,6 +159,7 @@
     <ClCompile Include="MPfloatPrint.cpp" />
     <ClCompile Include="MPfloatSqrt.cpp" />
     <ClCompile Include="MPfloatSub.cpp" />
+    <ClCompile Include="MPmpMul.cpp" />
     <ClCompile Include="MPuint.cpp" />
     <ClCompile Include="MPuintAdd.cpp" />
     <ClCompile Include="MPuintEqual.cpp" />
