@@ -78,11 +78,8 @@ namespace MP
 				{
 					int k = i + j;
 					low = _umul128(a1[i], a2[j], pup);
-
 					rem = _addcarry_u64(0, a3[k], low, a3 + k);
-
 					rem = _addcarry_u64(rem, a3[k + 1], up, a3 + k + 1);
-
 					_addcarry_u64(rem, a3[k + 2], 0, a3 + k + 2);
 				}
 			}
