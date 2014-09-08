@@ -3,6 +3,7 @@
 #include "MultiPrecision.h"
 
 #include <algorithm>
+#include <thread>
 
 namespace MP
 {
@@ -28,10 +29,23 @@ namespace MP
 			a22.m_data.exp = 0;
 			a22.m_data.A = a22.m_data.A + k;
 
-			MPfloat Z0 = a11 * a21;
-			MPfloat Z2 = a12 * a22;
-			MPfloat Z1 = (a11 + a12) * (a21 + a22) - Z0 - Z2;
+			MPfloat Z0, Z1, Z2;// Z0 = a11 * a21;// Z2 = a12 * a22;
+			if (std::min(l1, l2) > 1000)
+			{
+				std::thread t1(MpMul, std::ref<MPfloat>(Z0), a11, a21);
+				std::thread t2(MpMul, std::ref<MPfloat>(Z2), a12, a22);
+				Z1 = (a11 + a12) * (a21 + a22);
+				t1.join();
+				t2.join();
+			}
+			else
+			{
+				MpMul(Z0, a11, a21);
+				MpMul(Z2, a12, a22);
+				Z1 = (a11 + a12) * (a21 + a22);
+			}
 
+			Z1 = Z1 - Z0 - Z2;
 			Z0.m_data.exp += e1 + e2;
 			Z1.m_data.exp += e1 + e2 + k;
 			Z2.m_data.exp += e1 + e2 + k + k;
@@ -43,41 +57,32 @@ namespace MP
 			LPuint *a3 = out.m_data.A;
 			out.m_data.exp = e1 + e2;
 			out.m_data.len = l1 + l2 - 1;
-			int e3 = out.m_data.exp, l3 = out.m_data.len;
-			LPuint sup = 0, sup2 = 0, up, low;
-			LPuint *pup = &up, *psup = &sup, *psup2 = &sup2;
+
+			LPuint up, low;
+			LPuint *pup = &up;
 			unsigned char rem = 0, rem2 = 0;
-			for (int i = 0; i < l1 + l2 - 1; i++)
+			memset(a3, 0, sizeof(LPuint)* (l1 + l2 + 1));
+			for (int i = 0; i < l1; i++)
 			{
-				a3[i] = sup;
-				sup = sup2;
-				sup2 = 0;
-				int j = 0;
-				if (j <= i - l2)
+				for (int j = 0; j < l2; j++)
 				{
-					j = i - l2 + 1;
-				}
-				for (; j < l1 && j <= i; j++)
-				{
-					int k = i - j;
-					low = _umul128(a1[j], a2[k], pup);
+					int k = i + j;
+					low = _umul128(a1[i], a2[j], pup);
 
-					rem = _addcarry_u64(0, a3[i], low, a3 + i);
+					rem = _addcarry_u64(0, a3[k], low, a3 + k);
 
-					rem2 = _addcarry_u64(rem, sup, up, psup);
+					rem = _addcarry_u64(rem, a3[k + 1], up, a3 + k + 1);
 
-					_addcarry_u64(rem2, sup2, 0, psup2);
+					_addcarry_u64(rem, a3[k + 2], 0, a3 + k + 2);
 				}
 			}
-			if (sup != 0)
+			if (a3[out.m_data.len] != 0)
 			{
 				out.m_data.len++;
-				a3[out.m_data.len - 1] = sup;
 			}
-			if (sup2 != 0)
+			if (a3[out.m_data.len] != 0)
 			{
 				out.m_data.len++;
-				a3[out.m_data.len - 1] = sup2;
 			}
 			res = out;
 		}

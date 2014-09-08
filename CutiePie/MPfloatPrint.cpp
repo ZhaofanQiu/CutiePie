@@ -36,13 +36,13 @@ namespace PM
 		char sout[19];
 		while (n > k)
 		{
-			temp = temp * MPfloat((LPuint)1000000000000000000);
+			temp = temp * (LPuint)1000000000000000000;
 			LPuint pos = MPfloatPos(temp);
 			sprintf_s(sout, 19, "%018I64u", pos);
 			cout << sout;
 			n = n - k;
 		}
-		temp = temp * MPfloat((LPuint)1000000000000000000);
+		temp = temp * (LPuint)1000000000000000000;
 		sprintf_s(sout, 19, "%018I64u", MPfloatPos(temp));
 		char sout2[19];
 		strncpy_s(sout2, sout, n);

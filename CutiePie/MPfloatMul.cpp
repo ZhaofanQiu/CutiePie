@@ -60,48 +60,66 @@ namespace MP
 			LPuint *a3 = out.m_data.A;
 			out.m_data.exp = e1 + e2;
 			out.m_data.len = l1 + l2 - 1;
-			int e3 = out.m_data.exp, l3 = out.m_data.len;
-			LPuint sup = 0, sup2 = 0, up, low;
-			LPuint *pup = &up, *psup = &sup, *psup2 = &sup2;
+			
+			LPuint up, low;
+			LPuint *pup = &up;
 			unsigned char rem = 0, rem2 = 0;
-			for (int i = 0; i < l1 + l2 - 1; i++)
+			memset(a3, 0, sizeof(LPuint) * (l1 + l2 + 1));
+			for (int i = 0; i < l1; i++)
 			{
-				a3[i] = sup;
-				sup = sup2;
-				sup2 = 0;
-				int j = 0;
-				if (j <= i - l2)
+				for (int j = 0; j < l2; j++)
 				{
-					j = i - l2 + 1;
-				}
-				for (; j < l1 && j <= i; j++)
-				{
-					int k = i - j;
-					low = _umul128(a1[j], a2[k], pup);
+					int k = i + j;
+					low = _umul128(a1[i], a2[j], pup);
 
-					rem = _addcarry_u64(0, a3[i], low, a3 + i);
+					rem = _addcarry_u64(0, a3[k], low, a3 + k);
 
-					rem2 = _addcarry_u64(rem, sup, up, psup);
+					rem = _addcarry_u64(rem, a3[k + 1], up, a3 + k + 1);
 
-					_addcarry_u64(rem2, sup2, 0, psup2);
+					_addcarry_u64(rem, a3[k + 2], 0, a3 + k + 2);
 				}
 			}
-			if (sup != 0)
+			if (a3[out.m_data.len] != 0)
 			{
 				out.m_data.len++;
-				a3[out.m_data.len - 1] = sup;
 			}
-			if (sup2 != 0)
+			if (a3[out.m_data.len] != 0)
 			{
 				out.m_data.len++;
-				a3[out.m_data.len - 1] = sup2;
 			}
 			return out;
 		}
 	}
 	MPfloat MPfloat::operator*(const LPuint& lpf)
 	{
-		MPfloat temp(lpf, 0);
-		return operator*(temp);
+		LPuint *a1 = m_data.A;
+		int l1 = m_data.len;
+		int e1 = m_data.exp;
+
+		MPfloat out(l1 + 2);
+		LPuint *a3 = out.m_data.A;
+		out.m_data.exp = e1;
+		out.m_data.len = l1;
+
+		LPuint up, low;
+		LPuint *pup = &up;
+		unsigned char rem = 0, rem2 = 0;
+		memset(a3, 0, sizeof(LPuint)* (l1 + 2));
+		for (int i = 0; i < l1; i++)
+		{
+			low = _umul128(a1[i], lpf, pup);
+				rem = _addcarry_u64(0, a3[i], low, a3 + i);
+				rem = _addcarry_u64(rem, a3[i + 1], up, a3 + i + 1);
+				_addcarry_u64(rem, a3[i + 2], 0, a3 + i + 2);
+		}
+		if (a3[out.m_data.len] != 0)
+		{
+			out.m_data.len++;
+		}
+		if (a3[out.m_data.len] != 0)
+		{
+			out.m_data.len++;
+		}
+		return out;
 	}
 }

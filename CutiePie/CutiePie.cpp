@@ -9,7 +9,7 @@
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	int k = 100000;
+	int k = 1000000;
 
 	LPuint cn = 10939058860032000;
 	int dpt = (int)floor(log(cn / 6 / 2 / 6) / log(10));
@@ -26,6 +26,6 @@ int _tmain(int argc, _TCHAR* argv[])
 	res = res * PM::PiModule::MPfloatDiv(q, t, k);
 	t1.join();
 	res = res * isq;
-	//PM::PiModule::MPfloatPrint(res, k);
+	PM::PiModule::MPfloatPrint(res, k);
 }
 
