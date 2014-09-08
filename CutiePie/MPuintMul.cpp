@@ -49,12 +49,8 @@ namespace MP
 				MpMul2(Z2, a12, a22);
 				Z1 = (a11 + a12) * (a21 + a22);
 			}
-
 			Z1 = (Z1 - Z0) - Z2;
 
-			//Z0.m_data.exp += e1 + e2;
-			//Z1.m_data.exp += e1 + e2 + k;
-			//Z2.m_data.exp += e1 + e2 + k + k;
 			return MpAdd(MpAdd(Z0, Z1, k), Z2, k + k);
 		}
 		else
@@ -65,13 +61,14 @@ namespace MP
 
 			LPuint up, low;
 			LPuint *pup = &up;
-			unsigned char rem = 0, rem2 = 0;
+			unsigned char rem = 0;
 			memset(a3, 0, sizeof(LPuint)* (l1 + l2 + 1));
 			for (int i = 0; i < l1; i++)
 			{
 				for (int j = 0; j < l2; j++)
 				{
 					int k = i + j;
+
 					low = _umul128(a1[i], a2[j], pup);
 
 					rem = _addcarry_u64(0, a3[k], low, a3 + k);
