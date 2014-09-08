@@ -3,6 +3,7 @@
 
 #include "../CutiePie/MultiPrecision.h"
 #include "../CutiePie/PiModule.h"
+#include <thread>
 
 using namespace MP;
 using namespace PM;
@@ -154,7 +155,8 @@ namespace UnitTest
 		TEST_METHOD(SqrtTest)
 		{
 			int k = 10000;
-			PM::PiModule::MPfloatSqrt(MPfloat((LPuint)10005), k);
+			MP::MPfloat isq;
+			PM::PiModule::MPfloatSqrt(isq, MPfloat((LPuint)10005), k);
 		}
 		TEST_METHOD(MainTest)
 		{
@@ -166,10 +168,15 @@ namespace UnitTest
 			MP::MPfloat p, q, t;
 			MP::MPuint _p, _q, _t;
 			bool flag;
+			MP::MPfloat isq;
+			std::thread t1(PM::PiModule::MPfloatSqrt, std::ref<MPfloat>(isq), MPfloat((LPuint)10005), k);
+
 			PM::PiModule::BS(0, N, _p, _q, _t, flag);
 			p = _p; q = _q;	t = _t;
 			MP::MPfloat res((LPuint)4270934400);
-			res = res * PM::PiModule::MPfloatSqrt(MPfloat((LPuint)10005), k) * PM::PiModule::MPfloatDiv(q, t, k);
+			res = res * PM::PiModule::MPfloatDiv(q, t, k);
+			t1.join();
+			res = res * isq;
 		}
 	};
 }
