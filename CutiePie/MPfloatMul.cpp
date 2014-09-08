@@ -8,7 +8,7 @@
 
 namespace MP
 {
-	MPfloat MPfloat::operator*(const MPfloat& mpf)
+	MPfloat MPfloat::operator*(const MPfloat& mpf)const
 	{
 		LPuint *a1 = m_data.A, *a2 = mpf.m_data.A;
 		int l1 = m_data.len, l2 = mpf.m_data.len;
@@ -19,12 +19,16 @@ namespace MP
 			int k = std::min(l1, l2) / 2;
 			MPfloat a11(*this), a12(*this), a21(mpf), a22(mpf);
 			a11.m_data.len = k;
+			while ((a11.m_data.len > 0) && (a11.m_data.A[a11.m_data.len - 1] == 0))
+				a11.m_data.len--;
 			a11.m_data.exp = 0;
 			a12.m_data.len = l1 - k;
 			a12.m_data.exp = 0;
 			a12.m_data.A = a12.m_data.A + k;
 
 			a21.m_data.len = k;
+			while ((a21.m_data.len > 0) && (a21.m_data.A[a21.m_data.len - 1] == 0))
+				a21.m_data.len--;
 			a21.m_data.exp = 0;
 			a22.m_data.len = l2 - k;
 			a22.m_data.exp = 0;
@@ -90,7 +94,7 @@ namespace MP
 			return out;
 		}
 	}
-	MPfloat MPfloat::operator*(const LPuint& lpf)
+	MPfloat MPfloat::operator*(const LPuint& lpf)const
 	{
 		LPuint *a1 = m_data.A;
 		int l1 = m_data.len;
@@ -108,9 +112,9 @@ namespace MP
 		for (int i = 0; i < l1; i++)
 		{
 			low = _umul128(a1[i], lpf, pup);
-				rem = _addcarry_u64(0, a3[i], low, a3 + i);
-				rem = _addcarry_u64(rem, a3[i + 1], up, a3 + i + 1);
-				_addcarry_u64(rem, a3[i + 2], 0, a3 + i + 2);
+			rem = _addcarry_u64(0, a3[i], low, a3 + i);
+			rem = _addcarry_u64(rem, a3[i + 1], up, a3 + i + 1);
+			_addcarry_u64(rem, a3[i + 2], 0, a3 + i + 2);
 		}
 		if (a3[out.m_data.len] != 0)
 		{

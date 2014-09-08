@@ -6,7 +6,7 @@
 
 namespace MP
 {
-	MPfloat MPfloat::operator+(const MPfloat& mpf)
+	MPfloat MPfloat::operator+(const MPfloat& mpf)const
 	{
 		LPuint *a1 = m_data.A, *a2 = mpf.m_data.A;
 		int l1 = m_data.len, l2 = mpf.m_data.len;

@@ -3,56 +3,92 @@
 #include "MultiPrecision.h"
 
 #include <intrin.h>
+#include <algorithm>
+#include <thread>
+#include "MPmpMul.h"
 
 namespace MP
 {
-	MPuint MPuint::operator*(const MPuint& mpu)
+	MPuint MPuint::operator*(const MPuint& mpu)const
 	{
 		LPuint *a1 = m_data.A, *a2 = mpu.m_data.A;
 		int l1 = m_data.len, l2 = mpu.m_data.len;
-		MPuint out(l1 + l2 + 1);
 
-		LPuint *a3 = out.m_data.A;
-		out.m_data.len = l1 + l2 - 1;
-		
-		LPuint sup = 0, sup2 = 0, up, low;
-		LPuint *pup = &up, *psup = &sup, *psup2 = &sup2;
-		unsigned char rem = 0, rem2 = 0;
-		for (int i = 0; i < l1 + l2 - 1; i++)
+		if (std::min(l1, l2) > 100)
 		{
-			a3[i] = sup;
-			sup = sup2;
-			sup2 = 0;
-			int j = 0;
-			if (j <= i - l2)
+			int k = std::min(l1, l2) / 2;
+			MPuint a11(*this), a12(*this), a21(mpu), a22(mpu);
+			a11.m_data.len = k;
+			while ((a11.m_data.len > 0) && (a11.m_data.A[a11.m_data.len - 1] == 0))
+				a11.m_data.len--;
+			a12.m_data.len = l1 - k;
+			a12.m_data.A = a12.m_data.A + k;
+
+			a21.m_data.len = k;
+			while ((a21.m_data.len > 0) && (a21.m_data.A[a21.m_data.len - 1] == 0))
+				a21.m_data.len--;
+			a22.m_data.len = l2 - k;
+			a22.m_data.A = a22.m_data.A + k;
+			
+			MPuint Z0, Z1, Z2;// Z0 = a11 * a21;// Z2 = a12 * a22;
+			if (std::min(l1, l2) > 1000)
 			{
-				j = i - l2 + 1;
+				std::thread t1(MpMul2, std::ref<MPuint>(Z0), a11, a21);
+				std::thread t2(MpMul2, std::ref<MPuint>(Z2), a12, a22);
+				Z1 = (a11 + a12) * (a21 + a22);
+				t1.join();
+				t2.join();
 			}
-			for (; j < l1 && j <= i; j++)
+			else
 			{
-				int k = i - j;
-				low = _umul128(a1[j], a2[k], pup);
-
-				rem = _addcarry_u64(0, a3[i], low, a3 + i);
-
-				rem2 = _addcarry_u64(rem, sup, up, psup);
-
-				_addcarry_u64(rem2, sup2, 0, psup2);
+				MpMul2(Z0, a11, a21);
+				MpMul2(Z2, a12, a22);
+				Z1 = (a11 + a12) * (a21 + a22);
 			}
+
+			Z1 = (Z1 - Z0) - Z2;
+
+			//Z0.m_data.exp += e1 + e2;
+			//Z1.m_data.exp += e1 + e2 + k;
+			//Z2.m_data.exp += e1 + e2 + k + k;
+			return MpAdd(MpAdd(Z0, Z1, k), Z2, k + k);
 		}
-		if (sup != 0)
+		else
 		{
-			out.m_data.len++;
-			a3[out.m_data.len - 1] = sup;
+			MPuint out(l1 + l2 + 1);
+			LPuint *a3 = out.m_data.A;
+			out.m_data.len = l1 + l2 - 1;
+
+			LPuint up, low;
+			LPuint *pup = &up;
+			unsigned char rem = 0, rem2 = 0;
+			memset(a3, 0, sizeof(LPuint)* (l1 + l2 + 1));
+			for (int i = 0; i < l1; i++)
+			{
+				for (int j = 0; j < l2; j++)
+				{
+					int k = i + j;
+					low = _umul128(a1[i], a2[j], pup);
+
+					rem = _addcarry_u64(0, a3[k], low, a3 + k);
+
+					rem = _addcarry_u64(rem, a3[k + 1], up, a3 + k + 1);
+
+					_addcarry_u64(rem, a3[k + 2], 0, a3 + k + 2);
+				}
+			}
+			if (a3[out.m_data.len] != 0)
+			{
+				out.m_data.len++;
+			}
+			if (a3[out.m_data.len] != 0)
+			{
+				out.m_data.len++;
+			}
+			return out;
 		}
-		if (sup2 != 0)
-		{
-			out.m_data.len++;
-			a3[out.m_data.len - 1] = sup2;
-		}
-		return out;
 	}
-	MPuint MPuint::operator*(const LPuint& lpu)
+	MPuint MPuint::operator*(const LPuint& lpu)const
 	{
 		MPuint temp(lpu);
 		return operator*(temp);

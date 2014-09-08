@@ -7,84 +7,55 @@
 
 namespace MP
 {
-	void MpMul(MPfloat& res, const MPfloat& mpf1, const MPfloat& mpf2)
+	MPuint MpAdd(const MPuint& mpf1, const MPuint& mpf2, int exp)
 	{
 		LPuint *a1 = mpf1.m_data.A, *a2 = mpf2.m_data.A;
 		int l1 = mpf1.m_data.len, l2 = mpf2.m_data.len;
-		int e1 = mpf1.m_data.exp, e2 = mpf2.m_data.exp;
 
-		if (std::min(l1, l2) > 100)
+		MPuint out(std::max(l1, l2 + exp) + 1);
+
+		LPuint *a3 = out.m_data.A;
+
+		out.m_data.len = std::max(l1, l2 + exp);
+
+		unsigned char rem = 0;
+
+		for (int i = 0; i < out.m_data.len; i++)
 		{
-			int k = std::min(l1, l2) / 2;
-			MPfloat a11(mpf1), a12(mpf1), a21(mpf2), a22(mpf2);
-			a11.m_data.len = k;
-			a11.m_data.exp = 0;
-			a12.m_data.len = l1 - k;
-			a12.m_data.exp = 0;
-			a12.m_data.A = a12.m_data.A + k;
-
-			a21.m_data.len = k;
-			a21.m_data.exp = 0;
-			a22.m_data.len = l2 - k;
-			a22.m_data.exp = 0;
-			a22.m_data.A = a22.m_data.A + k;
-
-			MPfloat Z0, Z1, Z2;// Z0 = a11 * a21;// Z2 = a12 * a22;
-			if (std::min(l1, l2) > 1000)
+			bool in1 = (i < l1);
+			bool in2 = (i >= exp && i < exp + l2);
+			if (in1 && in2)
 			{
-				std::thread t1(MpMul, std::ref<MPfloat>(Z0), a11, a21);
-				std::thread t2(MpMul, std::ref<MPfloat>(Z2), a12, a22);
-				Z1 = (a11 + a12) * (a21 + a22);
-				t1.join();
-				t2.join();
+				rem = _addcarry_u64(rem, a1[i], a2[i - exp], a3 + i);
 			}
 			else
 			{
-				MpMul(Z0, a11, a21);
-				MpMul(Z2, a12, a22);
-				Z1 = (a11 + a12) * (a21 + a22);
-			}
-
-			Z1 = Z1 - Z0 - Z2;
-			Z0.m_data.exp += e1 + e2;
-			Z1.m_data.exp += e1 + e2 + k;
-			Z2.m_data.exp += e1 + e2 + k + k;
-			res = Z0 + Z1 + Z2;
-		}
-		else
-		{
-			MPfloat out(l1 + l2 + 1);
-			LPuint *a3 = out.m_data.A;
-			out.m_data.exp = e1 + e2;
-			out.m_data.len = l1 + l2 - 1;
-
-			LPuint up, low;
-			LPuint *pup = &up;
-			unsigned char rem = 0, rem2 = 0;
-			memset(a3, 0, sizeof(LPuint)* (l1 + l2 + 1));
-			for (int i = 0; i < l1; i++)
-			{
-				for (int j = 0; j < l2; j++)
+				if (in1 && !in2)
 				{
-					int k = i + j;
-					low = _umul128(a1[i], a2[j], pup);
-
-					rem = _addcarry_u64(0, a3[k], low, a3 + k);
-
-					rem = _addcarry_u64(rem, a3[k + 1], up, a3 + k + 1);
-
-					_addcarry_u64(rem, a3[k + 2], 0, a3 + k + 2);
+					rem = _addcarry_u64(rem, a1[i], 0, a3 + i);
+				}
+				else
+				{
+					if (!in1 && in2)
+						rem = _addcarry_u64(rem, 0, a2[i - exp], a3 + i);
+					else
+						rem = _addcarry_u64(rem, 0, 0, a3 + i);
 				}
 			}
-			if (a3[out.m_data.len] != 0)
-			{
-				out.m_data.len++;
-			}
-			if (a3[out.m_data.len] != 0)
-			{
-				out.m_data.len++;
-			}
-			res = out;
 		}
+		if (rem != 0)
+		{
+			out.m_data.len++;
+			out.m_data.A[out.m_data.len - 1] = rem;
+		}
+		return out;
+	}
+	void MpMul(MPfloat& res, const MPfloat& mpf1, const MPfloat& mpf2)
+	{
+		res = mpf1 * mpf2;
+	}
+	void MpMul2(MPuint& res, const MPuint& mpu1, const MPuint& mpu2)
+	{
+		res = mpu1 * mpu2;
 	}
 }

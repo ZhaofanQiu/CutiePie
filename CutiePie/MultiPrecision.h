@@ -36,14 +36,14 @@ namespace MP
 
 		void Cut(int n);
 		
-		MPuint operator+(const MPuint& mpu);
-		MPuint operator+(const LPuint& lpu);
+		MPuint operator+(const MPuint& mpu) const;
+		MPuint operator+(const LPuint& lpu) const;
 
-		MPuint operator-(const MPuint& mpu);
-		MPuint operator-(const LPuint& lpu);
+		MPuint operator-(const MPuint& mpu) const;
+		MPuint operator-(const LPuint& lpu) const;
 
-		MPuint operator*(const MPuint& mpu);
-		MPuint operator*(const LPuint& lpu);
+		MPuint operator*(const MPuint& mpu) const;
+		MPuint operator*(const LPuint& lpu) const;
 
 		bool operator>(const MPuint& mpu) const;
 		bool operator>(const LPuint& lpu) const;
@@ -67,12 +67,12 @@ namespace MP
 		MPfloat(const long double df, int es = 0, int ml = 2);
 		MPfloat(const MPuint& mpu, int bn = -1);
 		void Copy(const MPfloat& mpu);
-		MPfloat operator+(const MPfloat& mpf);
+		MPfloat operator+(const MPfloat& mpf)const;
 
-		MPfloat operator-(const MPfloat& mpf);
+		MPfloat operator-(const MPfloat& mpf)const;
 
-		MPfloat operator*(const MPfloat& mpf);
-		MPfloat operator*(const LPuint& lpf);
+		MPfloat operator*(const MPfloat& mpf)const;
+		MPfloat operator*(const LPuint& lpf)const;
 
 		bool operator>(const MPfloat& mpf) const;
 		bool operator<(const MPfloat& mpf) const;

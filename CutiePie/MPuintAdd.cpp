@@ -8,7 +8,7 @@
 
 namespace MP
 {
-	MPuint MPuint::operator+(const MPuint& mpu)
+	MPuint MPuint::operator+(const MPuint& mpu)const
 	{
 		LPuint *a1 = m_data.A, *a2 = mpu.m_data.A;
 		int l1 = m_data.len, l2 = mpu.m_data.len;
@@ -67,7 +67,7 @@ namespace MP
 		return out;
 	}
 
-	MPuint MPuint::operator+(const LPuint& lpu)
+	MPuint MPuint::operator+(const LPuint& lpu)const
 	{
 		MPuint out(m_data.len + 1);
 		LPuint *a1 = m_data.A, *a2 = out.m_data.A;
