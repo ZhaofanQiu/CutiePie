@@ -13,10 +13,14 @@ namespace MP
 		LPuint *a1 = m_data.A, *a2 = mpf.m_data.A;
 		int l1 = m_data.len, l2 = mpf.m_data.len;
 		int e1 = m_data.exp, e2 = mpf.m_data.exp;
+		int lmin = std::min(l1, l2);
+		int lmax = std::max(l1, l2);
 
-		if (std::min(l1, l2) > 100)
+		if (lmin > 100)
 		{
-			int k = std::min(l1, l2) / 2;
+			int k = lmax / 2;
+			if (k >= lmin)
+				k = lmin - 1;
 			MPfloat a11(*this), a12(*this), a21(mpf), a22(mpf);
 			a11.m_data.len = k;
 			while ((a11.m_data.len > 0) && (a11.m_data.A[a11.m_data.len - 1] == 0))
