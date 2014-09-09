@@ -14,6 +14,9 @@
     <Filter Include="CalculatePi">
       <UniqueIdentifier>{64f1251c-b112-4256-9526-06fd30810699}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FFT">
+      <UniqueIdentifier>{72914946-57de-407c-a8c1-15870800a79d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -33,6 +36,12 @@
     </ClInclude>
     <ClInclude Include="MPmpMul.h">
       <Filter>CalculatePi</Filter>
+    </ClInclude>
+    <ClInclude Include="complex.h">
+      <Filter>FFT</Filter>
+    </ClInclude>
+    <ClInclude Include="FFT.h">
+      <Filter>FFT</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -86,6 +95,9 @@
     </ClCompile>
     <ClCompile Include="MPmpMul.cpp">
       <Filter>CalculatePi</Filter>
+    </ClCompile>
+    <ClCompile Include="FFT.cpp">
+      <Filter>FFT</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

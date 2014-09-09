@@ -9,13 +9,23 @@
 #include <time.h>
 #include <iostream>
 
+#include "complex.h"
+#include "FFT.h"
+std::vector<std::vector<complex>> twiddle_table;
+int nk;
+
 int _tmain(int argc, _TCHAR* argv[])
 {
+	if (argc != 2)
+	{
+		std::cout << "Usage: CutiePie.exe ndigits!" << std::endl;
+		return 0;
+	}
+
 	clock_t begin = clock();
-	bool debug = true;
-
-	int k = 1000000;
-
+	bool debug = false;
+	
+	int k = _ttol(argv[1]);
 	LPuint cn = 10939058860032000;
 	int dpt = (int)floor(log(cn / 6 / 2 / 6) / log(10));
 	int N = int(k / dpt + 1);
@@ -23,6 +33,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	MP::MPuint _p, _q, _t;
 	bool flag;
 	MP::MPfloat isq;
+
 	std::thread t1(PM::PiModule::MPfloatSqrt, std::ref<MPfloat>(isq), MPfloat((LPuint)10005), k);
 
 	PM::PiModule::BS(0, N, _p, _q, _t, flag);
@@ -40,7 +51,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	if (debug)
 		std::cout << "Finish calculate, " << (double)(clock() - begin) / CLOCKS_PER_SEC << std::endl;
 	
-	PM::PiModule::MPfloatPrint(res, k);
+	if (!debug)
+		PM::PiModule::MPfloatPrint(res, k);
 	if (debug)
 		std::cout << "Finish print, " << (double)(clock() - begin) / CLOCKS_PER_SEC << std::endl;
 }

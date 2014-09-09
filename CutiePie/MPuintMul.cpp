@@ -15,7 +15,6 @@ namespace MP
 		int l1 = m_data.len, l2 = mpu.m_data.len;
 		int lmin = std::min(l1, l2);
 		int lmax = std::max(l1, l2);
-
 		if (lmin > 100)
 		{
 			int k = lmax / 2;

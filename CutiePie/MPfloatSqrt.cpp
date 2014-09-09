@@ -30,7 +30,7 @@ namespace PM
 				re = re + (MPfloat((LPuint)1) - rnx) * MPfloat((LPuint)0x8000000000000000, -1) * re;
 			}
 			re = MPfloatCut(re, n);
-			nn *= 2;
+			nn <<= 1;
 		}
 		res = re;
 	}

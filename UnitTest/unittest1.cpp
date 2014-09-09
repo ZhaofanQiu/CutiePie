@@ -3,8 +3,8 @@
 
 #include "../CutiePie/MultiPrecision.h"
 #include "../CutiePie/PiModule.h"
+#include "../CutiePie/FFT.h"
 #include <thread>
-
 using namespace MP;
 using namespace PM;
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -161,7 +161,6 @@ namespace UnitTest
 		TEST_METHOD(MainTest)
 		{
 			int k = 10000;
-
 			LPuint cn = 10939058860032000;
 			int dpt = (int)floor(log(cn / 6 / 2 / 6) / log(10));
 			int N = int(k / dpt + 1);

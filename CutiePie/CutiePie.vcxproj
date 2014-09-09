@@ -31,7 +31,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -142,6 +142,8 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="complex.h" />
+    <ClInclude Include="FFT.h" />
     <ClInclude Include="MPmpMul.h" />
     <ClInclude Include="MultiPrecision.h" />
     <ClInclude Include="PiModule.h" />
@@ -151,6 +153,7 @@
   <ItemGroup>
     <ClCompile Include="BS.cpp" />
     <ClCompile Include="CutiePie.cpp" />
+    <ClCompile Include="FFT.cpp" />
     <ClCompile Include="MPfloat.cpp" />
     <ClCompile Include="MPfloatAdd.cpp" />
     <ClCompile Include="MPfloatDiv.cpp" />
