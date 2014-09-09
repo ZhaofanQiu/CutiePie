@@ -39,7 +39,7 @@ namespace PM
 			temp = temp * (LPuint)1000000000000000000;
 			LPuint pos = MPfloatPos(temp);
 			sprintf_s(sout, 19, "%018I64u", pos);
-			//cout << sout;
+			cout << sout;
 			n = n - k;
 		}
 		temp = temp * (LPuint)1000000000000000000;
@@ -47,6 +47,6 @@ namespace PM
 		char sout2[19];
 		strncpy_s(sout2, sout, n);
 		sout2[n] = '\0';
-		//cout << sout2 << endl;
+		cout << sout2 << endl;
 	}
 }

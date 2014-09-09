@@ -39,7 +39,7 @@ namespace MP
 			a22.m_data.A = a22.m_data.A + k;
 			
 			MPfloat Z0, Z1, Z2;// Z0 = a11 * a21;// Z2 = a12 * a22;
-			if (lmin > 1000)
+			if (lmin > 2000)
 			{
 				std::thread t1(MpMul, std::ref<MPfloat>(Z0), a11, a21);
 				std::thread t2(MpMul, std::ref<MPfloat>(Z2), a12, a22);

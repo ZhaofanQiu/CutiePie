@@ -11,10 +11,10 @@ namespace PM
 		int n2 = (int)floor(n * log2((double)10) / 64) + 2;
 		if (n2 >= mpf.m_data.len)
 			return mpf;
-		MPfloat out(n2);
+		MPfloat out(mpf);
+		out.m_data.A += out.m_data.len - n2;
 		out.m_data.len = n2;
-		out.m_data.exp = mpf.m_data.exp + mpf.m_data.len - n2;
-		memcpy(out.m_data.A, mpf.m_data.A + mpf.m_data.len - n2, n2 * sizeof(LPuint));
+		out.m_data.exp += mpf.m_data.len - n2;
 		LPuint max64 = 0xffffffffffffffff;
 
 		if (mpf.m_data.A[mpf.m_data.len - n2 - 1] > max64 / 2)

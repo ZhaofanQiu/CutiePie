@@ -35,7 +35,7 @@ namespace MP
 			a22.m_data.A = a22.m_data.A + k;
 			
 			MPuint Z0, Z1, Z2;// Z0 = a11 * a21;// Z2 = a12 * a22;
-			if (std::min(l1, l2) > 1000)
+			if (std::min(l1, l2) > 2000)
 			{
 				std::thread t1(MpMul2, std::ref<MPuint>(Z0), a11, a21);
 				std::thread t2(MpMul2, std::ref<MPuint>(Z2), a12, a22);
